@@ -16,7 +16,7 @@ const Login = () => {
 
   const handleButtonClick = () => {
     // validate the form data
-    const message = checkValidData(email.current.value,password.current.value,name.current.value,isSigninForm);
+    const message = checkValidData(email?.current?.value,password?.current?.value,name?.current?.value,isSigninForm);
     setErrorMessage(message);
 
     // sign in || sign up
