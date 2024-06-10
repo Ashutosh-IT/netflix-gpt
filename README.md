@@ -9,6 +9,9 @@
 - signup form
 - Form Validation
 - useRef hook
+- Firebase setup
+- deployment to production
+
 
 
 
