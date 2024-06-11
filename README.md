@@ -11,6 +11,8 @@
 - useRef hook
 - Firebase setup
 - deployment to production
+- signup api using firebase
+- signin api using firebase
 
 
 
