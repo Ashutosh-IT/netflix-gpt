@@ -13,6 +13,7 @@
 - deployment to production
 - signup api using firebase
 - signin api using firebase
+- created redux store with userSlice
 
 
 
