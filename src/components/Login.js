@@ -1,15 +1,22 @@
 import React, { useRef, useState } from "react";
 import Header from "./Header";
 import { checkValidData } from "../utils/validate";
-import { createUserWithEmailAndPassword, signInWithEmailAndPassword } from "firebase/auth";
+import {
+  createUserWithEmailAndPassword,
+  signInWithEmailAndPassword,
+  updateProfile,
+} from "firebase/auth";
 import { auth } from "../utils/firebase";
 import { useNavigate } from "react-router-dom";
+import { useDispatch } from "react-redux";
+import { addUser } from "../utils/userSlice";
 
 const Login = () => {
   const [isSigninForm, setIsSigninForm] = useState(true);
   const [errorMessage, setErrorMessage] = useState(null);
 
   const navigate = useNavigate();
+  const dispatch = useDispatch();
 
   const name = useRef(null);
   const email = useRef(null);
@@ -21,37 +28,64 @@ const Login = () => {
 
   const handleButtonClick = () => {
     // validate the form data
-    const message = checkValidData(email?.current?.value, password?.current?.value, name?.current?.value, isSigninForm);
+    const message = checkValidData(
+      email?.current?.value,
+      password?.current?.value,
+      name?.current?.value,
+      isSigninForm
+    );
     setErrorMessage(message);
 
-    if(message) return;
+    if (message) return;
 
     // sign up
     if (!isSigninForm) {
-      createUserWithEmailAndPassword(auth, email.current.value, password.current.value)
+      createUserWithEmailAndPassword(
+        auth,
+        email.current.value,
+        password.current.value
+      )
         .then((userCredential) => {
           const user = userCredential.user;
-          navigate('/browse');
-          console.log(user);
+          updateProfile(user, {
+            displayName: name.current.value,
+            photoURL: "https://randomuser.me/api/portraits/men/26.jpg",
+          })
+            .then(() => {
+              const { uid, email, displayName, photoURL } = auth.currentUser;
+              dispatch(
+                addUser({
+                  uid: uid,
+                  email: email,
+                  displayName: displayName,
+                  photoURL: photoURL,
+                })
+              );
+              navigate("/browse");
+            })
+            .catch((error) => {
+              setErrorMessage(error);
+            });
         })
         .catch((error) => {
-          const errorCode = error.code;
           const errorMessage = error.message;
           setErrorMessage(errorMessage);
         });
-    } 
-    
+    }
 
     // sign in
     else {
-      signInWithEmailAndPassword(auth, email.current.value, password.current.value)
+      signInWithEmailAndPassword(
+        auth,
+        email.current.value,
+        password.current.value
+      )
         .then((userCredential) => {
           const user = userCredential.user;
-          navigate('/browse');
+          navigate("/browse");
           console.log(user);
         })
         .catch((error) => {
-          const errorCode = error.code;
           const errorMessage = error.message;
           setErrorMessage(errorMessage);
         });
@@ -62,7 +96,8 @@ const Login = () => {
     <div>
       <Header />
       <div className="absolute">
-        <img className=""
+        <img
+          className=""
           src="https://assets.nflxext.com/ffe/siteui/vlv3/cacfadb7-c017-4318-85e4-7f46da1cae88/e43aa8b1-ea06-46a5-abe3-df13243e718d/IN-en-20240603-popsignuptwoweeks-perspective_alpha_website_large.jpg"
           alt="background"
         />

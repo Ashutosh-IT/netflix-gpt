@@ -14,6 +14,9 @@
 - signup api using firebase
 - signin api using firebase
 - created redux store with userSlice
+- created browse page header
+- implemented signout feature
+- update profile api call
 
 
 
