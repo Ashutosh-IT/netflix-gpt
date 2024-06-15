@@ -17,6 +17,8 @@
 - created browse page header
 - implemented signout feature
 - update profile api call
+- Bugfix: signup user displayName profile picture
+- Bugfix: if the user is not logged in and try to access browse page then redirect to login page and vice versa
 
 
 
