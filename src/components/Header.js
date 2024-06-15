@@ -47,7 +47,7 @@ const Header = () => {
       {user && <div className="flex items-center justify-between">
         <img
             className="my-5 rounded-md h-10"
-            src={user?.photoURL}
+            src={user?.photoURL ? user.photoURL :"https://wallpapers.com/images/hd/netflix-profile-pictures-1000-x-1000-qo9h82134t9nv0j0.jpg"}
             alt="user"
         />
         <button
